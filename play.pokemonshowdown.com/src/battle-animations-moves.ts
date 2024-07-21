@@ -36112,9 +36112,12 @@ BattleMoveAnims['tripledive'] = {anim: BattleMoveAnims['dive'].anim};
 BattleMoveAnims['hydrosteam'] = {anim: BattleMoveAnims['steameruption'].anim};
 BattleMoveAnims['psyblade'] = {anim: BattleMoveAnims['psychocut'].anim};
 
-BattleMoveAnims['forcepunch'] = {anim: BattleMoveAnims['drainpunch'].anim};
-BattleMoveAnims['cascadecrash'] = {anim: BattleMoveAnims['steelwing'].anim};
+BattleMoveAnims['cascadecrash'] = {anim: BattleMoveAnims['wavecrash'].anim};
 BattleMoveAnims['etherealcutter'] = {
 	anim: BattleMoveAnims['psychocut'].anim,
 	prepareAnim: BattleMoveAnims['shadowforce'].prepareAnim,
 };
+BattleMoveAnims['shadowcrescent'] = {anim: BattleMoveAnims['nightshade'].anim};
+BattleMoveAnims['solarflare'] = {anim: BattleMoveAnims['flameburst'].anim};
+BattleMoveAnims['rampaginghammer'] = {anim: BattleMoveAnims['woodhammer'].anim};
+BattleMoveAnims['rottenvial'] = {anim: BattleMoveAnims['fling'].anim};

@@ -245,7 +245,6 @@
 				publ: "PUBL",
 				zubl: "ZUBL",
 
-
 				subl: "SUBL",
 				su: "SU"
 			};

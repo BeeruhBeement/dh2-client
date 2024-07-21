@@ -1023,13 +1023,19 @@ class BattleTooltips {
 
 			if (this.battle.gen > 2 && ability === 'quickfeet') {
 				stats.spe = Math.floor(stats.spe * 1.5);
-			} else if (pokemon.status === 'par') {
-				if (this.battle.gen > 6) {
-					stats.spe = Math.floor(stats.spe * 0.5);
-				} else {
-					stats.spe = Math.floor(stats.spe * 0.25);
+			}	else if (pokemon.status === 'par') {
+					if (this.battle.gen > 6) {
+						stats.spe = Math.floor(stats.spe * 0.5);
+
+					} if (this.battle.tier.includes("Modded")) {
+						stats.spe = Math.floor(stats.spe * 0.5);
+					}
+					
+					else {
+						stats.spe = Math.floor(stats.spe * 0.25);
+					}
 				}
-			}
+				
 		}
 
 		// gen 1 doesn't support items
@@ -1118,7 +1124,7 @@ class BattleTooltips {
 			stats.atk = Math.floor(stats.atk * 1.5);
 		}
 		if (weather) {
-			if (this.battle.gen >= 4 && this.pokemonHasType(pokemon, 'Rock') && weather === 'sandstorm') {
+			if ((this.battle.gen >= 4 && this.pokemonHasType(pokemon, 'Rock') && weather === 'sandstorm') || this.battle.tier.includes("Modded") && (this.pokemonHasType(pokemon, 'Rock') && weather === 'sandstorm')) {
 				stats.spd = Math.floor(stats.spd * 1.5);
 			}
 			if (this.pokemonHasType(pokemon, 'Ice') && weather === 'snow') {
@@ -1164,6 +1170,10 @@ class BattleTooltips {
 			stats.atk = Math.floor(stats.atk * 0.5);
 			stats.spa = Math.floor(stats.spa * 0.5);
 		}
+		if (ability === 'superhero' && serverPokemon.hp <= serverPokemon.maxhp / 2) {
+			stats.atk = Math.floor(stats.atk * 1.3);
+			stats.def = Math.floor(stats.def * 1.3);
+		}
 		if (clientPokemon) {
 			if (clientPokemon.volatiles['slowstart']) {
 				stats.atk = Math.floor(stats.atk * 0.5);
@@ -1174,7 +1184,7 @@ class BattleTooltips {
 			}
 			for (const statName of Dex.statNamesExceptHP) {
 				if (clientPokemon.volatiles['protosynthesis' + statName] || clientPokemon.volatiles['quarkdrive' + statName]) {
-					if (statName === 'spe') {
+					if (statName === 'spe' && !this.battle.tier.includes("Modded")) {
 						speedModifiers.push(1.5);
 					} else {
 						stats[statName] = Math.floor(stats[statName] * 1.3);
@@ -1609,7 +1619,7 @@ class BattleTooltips {
 			value.set(0, "Poison type");
 			return value;
 		}
-		if (move.id === 'blizzard' && this.battle.gen >= 4) {
+		if ((move.id === 'blizzard' && this.battle.gen >= 4) || (move.id === 'blizzard' && this.battle.tier.includes("Modded"))) {
 			value.weatherModify(0, 'Hail');
 			value.weatherModify(0, 'Snow');
 		}
@@ -1774,6 +1784,11 @@ class BattleTooltips {
 		if (['hex', 'infernalparade'].includes(move.id) && target?.status) {
 			value.modify(2, move.name + ' + status');
 		}
+
+		if (['purist'].includes(pokemon.ability) && target?.status) {
+			value.modify(1.5, pokemon.ability + ' + status');
+		}
+
 		if (move.id === 'lastrespects') {
 			value.set(Math.min(50 + 50 * pokemon.side.faintCounter));
 		}
@@ -1935,9 +1950,17 @@ class BattleTooltips {
 		if (pokemon.status === 'brn' && move.category === 'Special') {
 			value.abilityModify(1.5, "Flare Boost");
 		}
-		if (move.flags['punch']) {
+		if (move.flags['punch'] && !this.battle.tier.includes("Modded")) {
 			value.abilityModify(1.2, 'Iron Fist');
 		}
+
+		if (move.flags['punch'] && this.battle.tier.includes("Modded")) {
+			value.abilityModify(1.3, 'Iron Fist');
+		}
+		if (move && this.battle.tier.includes("Modded")) {
+			value.abilityModify(1.3, 'Power Spot');
+		}
+
 		if (move.flags['pulse']) {
 			value.abilityModify(1.5, "Mega Launcher");
 		}
@@ -1959,8 +1982,11 @@ class BattleTooltips {
 		if (move.secondaries) {
 			value.abilityModify(1.3, "Sheer Force");
 		}
-		if (move.flags['contact']) {
+		if (move.flags['contact'] && !this.battle.tier.includes("Modded")) {
 			value.abilityModify(1.3, "Tough Claws");
+		}
+		if (move.flags['contact'] && this.battle.tier.includes("Modded")) {
+			value.abilityModify(1.2, "Tough Claws");
 		}
 		if (move.flags['sound']) {
 			value.abilityModify(1.3, "Punk Rock");
@@ -2002,6 +2028,18 @@ class BattleTooltips {
 			value.abilityModify(1.2, 'Reckless');
 		}
 
+		// List of moves that should show the boost
+		const illuminateMoves = [
+			'aurorabeam', 'bubblebeam', 'dazzlinggleam', 'eternabeam', 'flashcannon',
+			'icebeam', 'lightofruin', 'lightthatburnsthesky', 'meteorbeam', 'moongeistbeam',
+			'prismaticlaser', 'psybeam', 'signalbeam', 'solarbeam', 'solarblade',
+			'steelbeam', 'doomdesire', 'glitzyglow', 'fleurcannon', 'lusterpurge',
+			'mirrorshot', 'moonblast', 'photongeyser', 'powergem'
+		];
+		if (illuminateMoves.includes(move.id) && this.battle.tier.includes("Modded")) {
+			value.abilityModify(1.2, 'Illuminate');
+		}
+
 		if (move.category !== 'Status') {
 			let auraBoosted = '';
 			let auraBroken = false;
@@ -2016,9 +2054,8 @@ class BattleTooltips {
 					auraBroken = true;
 				} else if (allyAbility === 'Battery' && ally !== pokemon && move.category === 'Special') {
 					value.modify(1.3, 'Battery');
-				} else if (allyAbility === 'Power Spot' && ally !== pokemon) {
-					value.modify(1.3, 'Power Spot');
-				} else if (allyAbility === 'Steely Spirit' && moveType === 'Steel') {
+				}
+				else if (allyAbility === 'Steely Spirit' && moveType === 'Steel') {
 					if (this.battle.tier.includes("VaporeMons")) {
 						value.modify(2, 'Steely Spirit');
 					} else {
@@ -2046,13 +2083,26 @@ class BattleTooltips {
 		}
 
 		// Terrain
-		if ((this.battle.hasPseudoWeather('Electric Terrain') && moveType === 'Electric') ||
-			(this.battle.hasPseudoWeather('Grassy Terrain') && moveType === 'Grass') ||
-			(this.battle.hasPseudoWeather('Psychic Terrain') && moveType === 'Psychic')) {
-			if (pokemon.isGrounded(serverPokemon)) {
-				value.modify(this.battle.gen > 7 ? 1.3 : 1.5, 'Terrain boost');
+		if (!this.battle.tier.includes("Modded")) {
+				if ((this.battle.hasPseudoWeather('Electric Terrain') && moveType === 'Electric') ||
+					(this.battle.hasPseudoWeather('Grassy Terrain') && moveType === 'Grass') ||
+					(this.battle.hasPseudoWeather('Psychic Terrain') && moveType === 'Psychic')) {
+					if (pokemon.isGrounded(serverPokemon)) {
+						value.modify(this.battle.gen > 7 ? 1.3 : 1.5, 'Terrain boost');
+					}
 			}
-		} else if (this.battle.hasPseudoWeather('Misty Terrain') && moveType === 'Dragon') {
+		} else if (this.battle.tier.includes("Modded"))
+		{
+			if ((this.battle.hasPseudoWeather('Electric Terrain') && moveType === 'Electric') ||
+				(this.battle.hasPseudoWeather('Grassy Terrain') && moveType === 'Grass') ||
+				(this.battle.hasPseudoWeather('Psychic Terrain') && moveType === 'Psychic')||
+				(this.battle.hasPseudoWeather('Misty Terrain') && moveType === 'Fairy')) {
+				if (pokemon.isGrounded(serverPokemon)) {
+					value.modify(1.3, 'Terrain boost');
+				}
+			}
+		}
+		else if (this.battle.hasPseudoWeather('Misty Terrain') && moveType === 'Dragon') {
 			if (target ? target.isGrounded() : true) {
 				value.modify(0.5, 'Misty Terrain + grounded target');
 			}
@@ -2096,7 +2146,7 @@ class BattleTooltips {
 		}
 
 		if (
-			move.id === 'steelroller' &&
+			move.id === 'steelroller' &&  !this.battle.tier.includes("Modded") &&
 			!this.battle.hasPseudoWeather('Electric Terrain') &&
 			!this.battle.hasPseudoWeather('Grassy Terrain') &&
 			!this.battle.hasPseudoWeather('Misty Terrain') &&
@@ -2184,11 +2234,17 @@ class BattleTooltips {
 		// Type-enhancing items
 		if (BattleTooltips.itemTypes[item.name] === moveType) {
 			value.itemModify(this.battle.gen < 4 ? 1.1 : 1.2);
+			if (this.battle.tier.includes("Modded")) value.itemModify(1.2);
 			return value;
 		}
 
 		// Light ball is a base power modifier in gen 4 only
 		if (item.name === 'Light Ball' && this.battle.gen === 4 && speciesName === 'Pikachu') {
+			value.itemModify(2);
+			return value;
+		}
+		
+		if (this.battle.tier.includes("Modded") && item.name === 'Light Ball' && (speciesName === 'Pichu' || speciesName === 'Pikachu' || speciesName === 'Raichu' || speciesName === 'Raichu-Alola')) {
 			value.itemModify(2);
 			return value;
 		}
@@ -2246,6 +2302,7 @@ class BattleTooltips {
 				return value;
 			}*/
 		}
+		
 		return value;
 	}
 	getPokemonTypes(pokemon: Pokemon | ServerPokemon, preterastallized = false): ReadonlyArray<TypeName> {

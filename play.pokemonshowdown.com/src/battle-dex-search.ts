@@ -1116,6 +1116,9 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		else if (format === 'nu') tierSet = tierSet.slice(slices.NU || slices.RU || slices.UU);
 		else if (format === 'pu') tierSet = tierSet.slice(slices.PU || slices.NU);
 		else if (format === 'zu') tierSet = tierSet.slice(slices.ZU || slices.PU || slices.NU);
+
+		else if (format === 'su') tierSet = tierSet.slice(slices.SU || slices.ZU || slices.PU || slices.NU || slices.RU || slices.UU);
+
 		else if (format === 'lc' || format === 'lcuu' || format.startsWith('lc') || (format !== 'caplc' && format.endsWith('lc'))) tierSet = tierSet.slice(slices.LC);
 		else if (format === 'cap' || format.endsWith('cap')) {
 			tierSet = tierSet.slice(0, slices.AG || slices.Uber).concat(tierSet.slice(slices.OU));
@@ -1825,7 +1828,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			for (let id in this.getTable()) {
 				if (!format.startsWith('cap') && (id === 'paleowave' || id === 'shadowstrike')) continue;
 				let move = dex.moves.get(id);
-				if (!move.exists || moves.includes(id) || move.gen > dex.gen) continue;
+				if (!move.exists || moves.includes(id) || move.gen > dex.gen && !this.battle.tier.includes("Modded")) continue;
 				if (sketch) {
 					if (move.noSketch || move.isMax || move.isZ) continue;
 					if (move.isNonstandard && move.isNonstandard !== 'Past') continue;

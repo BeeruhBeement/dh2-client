@@ -919,7 +919,7 @@ export class BattleScene implements BattleSceneStub {
 		return buf + ' <small>(' + cond[2] + ' or ' + cond[3] + ' turns)</small>';
 	}
 	weatherLeft() {
-		if (this.battle.gen < 7 && this.battle.hardcoreMode) return '';
+		if ((this.battle.gen < 7 || !this.battle.tier.includes("Modded")) && this.battle.hardcoreMode) return '';
 
 		let weatherhtml = ``;
 

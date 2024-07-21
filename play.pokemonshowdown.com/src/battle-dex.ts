@@ -180,7 +180,7 @@ const Dex = new class implements ModdedDex {
 	pokeballs: string[] | null = null;
 
 	//TODO we might want to move this to something like data/petmods
-	readonly modResourcePrefix = 'https://raw.githubusercontent.com/scoopapa/dh2/master/data/mods/';
+	readonly modResourcePrefix = 'https://raw.githubusercontent.com/BeeruhBeement/pokemon-showdown/master/data/mods/';
 
 
 	resourcePrefix = (() => {
@@ -327,6 +327,11 @@ const Dex = new class implements ModdedDex {
 	getCSICategory(type: string) {
 		return [
 			'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Psychic', 'Dark', 'Dragon', 'Cosmic'
+		].includes(type) ? 'Special' : 'Physical';
+	}
+	getGen3ModCategory(type: string) {
+		return [
+			'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Psychic', 'Ghost', 'Fairy',
 		].includes(type) ? 'Special' : 'Physical';
 	}
 
@@ -983,6 +988,9 @@ class ModdedDex {
 						break;
 					case 'gen2crystalseviiislands':
 						data.category = Dex.getCSICategory(data.type);	
+						break;
+					case 'gen3mod':
+						data.category = Dex.getGen3ModCategory(data.type);	
 						break;
 					default: 
 						data.category = Dex.getGen3Category(data.type);
