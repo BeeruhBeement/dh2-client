@@ -1426,11 +1426,14 @@ export class Battle {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
 				}
-				this.weatherTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 8;
-				this.weatherMinTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 5;
+				this.weatherTimeLeft = ((this.gen <= 5 && !this.tier.includes("Modded")) || isExtremeWeather) ? 0 : 8;
+				this.weatherMinTimeLeft = ((this.gen <= 5 && !this.tier.includes("Modded")) || isExtremeWeather) ? 0 : 5;
 			} else if (isExtremeWeather) {
 				this.weatherTimeLeft = 0;
 				this.weatherMinTimeLeft = 0;
+			} else if (this.tier.includes("Modded")) {
+				this.weatherTimeLeft = 8;
+				this.weatherMinTimeLeft = 5;
 			} else {
 				this.weatherTimeLeft = (this.gen <= 3 ? 5 : 8);
 				this.weatherMinTimeLeft = (this.gen <= 3 ? 0 : 5);

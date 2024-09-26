@@ -409,3 +409,22 @@
 	background: linear-gradient(90deg, hsl(330, 65%, 45%), hsl(126, 71%, 73%), hsl(231, 100%, 86%));
 	border-color: linear-gradient(90deg, hsl(330, 66%, 58%), hsl(126, 79%, 65%), hsl(231, 98%, 65%));
 }
+
+.movemenu button.type-Sound {
+	background: hsl(230, 45%, 90%);
+	background: linear-gradient(to bottom, hsl(230, 45%, 95%), hsl(230, 45%, 80%));
+	border-color: hsl(230, 45%, 60%);
+}
+.movemenu button.type-Sound small {
+	color: hsl(230, 45%, 35%);
+}
+.movemenu button.type-Sound:hover {
+	background: hsl(230, 45%, 85%);
+	background: linear-gradient(to bottom, hsl(230, 45%, 92%), hsl(230, 45%, 75%));
+	border-color: hsl(230, 45%, 50%);
+}
+.movemenu button.type-Sound:active, .movemenu button.type-Sound.pressed {
+	background: hsl(230, 45%, 75%);
+	background: linear-gradient(to bottom, hsl(230, 45%, 75%), hsl(230, 45%, 82%));
+	border-color: hsl(230, 45%, 40%);
+}

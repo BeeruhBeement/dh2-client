@@ -1409,7 +1409,7 @@ function buildTeambuilderTables() {
 					specificItems.push(id);
 					continue;
 				}
-				if (modEntry.isPokeball || modEntry.name.startsWith("TR")) {
+				if (modEntry.isPokeball/* || modEntry.name.startsWith("TR")*/) {
 					badItems.push(id);
 					continue;
 				}

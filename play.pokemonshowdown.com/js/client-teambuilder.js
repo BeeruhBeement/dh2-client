@@ -1344,7 +1344,12 @@
 			buf += '</div>';
 			buf += '<div class="setcell setcell-typeicons">';
 			var types = species.types;
-			var table = (this.curTeam.gen < 7 ? BattleTeambuilderTable['gen' + this.curTeam.gen] : null);
+			var table = null;
+			if (this.curTeam.mod === 'gen3mod' || this.curTeam.mod === 'gen1mod') {
+				table = BattleTeambuilderTable[this.curTeam.mod];
+			} else if (this.curTeam.gen < 7) {
+				table = BattleTeambuilderTable['gen' + this.curTeam.gen];
+			}
 			if (
 				table && table.overrideDexInfo && species.id in table.overrideDexInfo &&
 				table.overrideDexInfo[species.id].types

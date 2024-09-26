@@ -12,6 +12,247 @@
 import {AnimTable, BattleOtherAnims} from './battle-animations';
 
 export const BattleMoveAnims: AnimTable = {
+	// custom
+	solarflare: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('fireball', {
+				x: attacker.x,
+				y: attacker.y + 200,
+				z: attacker.z,
+				scale: 2.5,
+				opacity: 1,
+				time: 500,
+			}, {
+				scale: 3,
+				opacity: 0,
+				time: 1300,
+			}, 'decel');
+			scene.showEffect('fireball', {
+				x: attacker.x,
+				y: attacker.y + 200,
+				z: attacker.z,
+				scale: 0.8,
+				opacity: 0.6,
+				time: 800,
+			}, {
+				x: defender.x,
+				y: defender.y,
+				z: defender.z,
+				scale: 1.2,
+				opacity: 0.5,
+				time: 1000,
+			}, 'linear', 'explode');
+			scene.showEffect('fireball', {
+				x: defender.x,
+				y: defender.y - 50,
+				z: defender.z,
+				scale: 1,
+				xscale: 3,
+				opacity: 0.5,
+				time: 1375,
+			}, {
+				scale: 3,
+				xscale: 8,
+				opacity: 0.1,
+				time: 1675,
+			}, 'linear', 'explode');
+		},
+	},
+	shadowcrescent: {
+		anim(scene, [attacker, defender]) {
+			scene.backgroundEffect(`url('https://${Config.routes.client}/fx/bg-space.jpg')`, 800, 0.6);
+			scene.showEffect('moon', {
+				x: attacker.x,
+				y: attacker.y + 150,
+				z: attacker.z,
+				scale: 0.8,
+				opacity: 0.6,
+			}, {
+				x: defender.x,
+				y: defender.y,
+				z: defender.z,
+				scale: 1,
+				opacity: 1,
+				time: 500,
+			}, 'linear', 'explode');
+
+			defender.delay(500);
+			defender.anim({
+				y: defender.behindy(10),
+				z: defender.behind(10),
+				time: 200,
+			}, 'swing');
+			defender.anim({
+				time: 300,
+			}, 'swing');
+		},
+	},
+	bladequills: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('feather', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 1,
+				opacity: 0.6,
+			}, {
+				x: defender.x,
+				y: defender.y,
+				z: defender.z,
+				opacity: 0.6,
+				time: 300,
+			}, 'linear', 'explode');
+			scene.showEffect('feather', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.5,
+				opacity: 0.6,
+				time: 75,
+			}, {
+				x: defender.x,
+				y: defender.y,
+				z: defender.z,
+				opacity: 0.6,
+				time: 375,
+			}, 'linear', 'fade');
+			scene.showEffect('feather', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.5,
+				opacity: 0.6,
+				time: 150,
+			}, {
+				x: defender.x,
+				y: defender.y,
+				z: defender.z,
+				opacity: 0.6,
+				time: 450,
+			}, 'linear', 'fade');
+		},
+	},
+	resonantannihilation: {
+		anim(scene, [attacker, defender]) {
+			scene.backgroundEffect('linear-gradient(#005c99 30%, #0099ff)', 2000, 0.8);
+			defender.delay(125);
+			defender.anim({
+				z: defender.behind(5),
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				z: defender.behind(5),
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				z: defender.behind(5),
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				z: defender.behind(5),
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				time: 150,
+			}, 'swing');
+			scene.backgroundEffect('#000000', 900, 0.5);
+			scene.showEffect('iceball', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0,
+				opacity: 0.5,
+				time: 0,
+			}, {
+				z: attacker.behind(-50),
+				scale: 7,
+				opacity: 0,
+				time: 400,
+			}, 'linear');
+			scene.showEffect('iceball', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0,
+				opacity: 0.5,
+				time: 150,
+			}, {
+				z: attacker.behind(-50),
+				scale: 7,
+				opacity: 0,
+				time: 600,
+			}, 'linear');
+			scene.showEffect('iceball', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0,
+				opacity: 0.5,
+				time: 300,
+			}, {
+				z: attacker.behind(-50),
+				scale: 7,
+				opacity: 0,
+				time: 800,
+			}, 'linear');
+
+			attacker.anim({
+				y: defender.y + 120,
+				xscale: 0,
+				yscale: 0,
+				opacity: 0,
+				time: 300,
+			}, 'accel');
+			attacker.delay(825);
+			attacker.anim({
+				x: attacker.x,
+				y: attacker.y + 40,
+				z: attacker.behind(40),
+				xscale: 1,
+				yscale: 1,
+				time: 1,
+			});
+			attacker.anim({
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				time: 250,
+			}, 'decel');
+			defender.delay(625);
+			defender.anim({
+				z: defender.behind(5),
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				z: defender.behind(5),
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				time: 75,
+			}, 'swing');
+			defender.anim({
+				z: defender.behind(15),
+				time: 200,
+			}, 'decel');
+			defender.anim({
+				time: 350,
+			}, 'swing');
+		},
+	},
+	// end of custom
+	
 	taunt: {
 		anim(scene, [attacker, defender]) {
 			BattleOtherAnims.dance.anim(scene, [attacker, defender]);
@@ -36112,12 +36353,24 @@ BattleMoveAnims['tripledive'] = {anim: BattleMoveAnims['dive'].anim};
 BattleMoveAnims['hydrosteam'] = {anim: BattleMoveAnims['steameruption'].anim};
 BattleMoveAnims['psyblade'] = {anim: BattleMoveAnims['psychocut'].anim};
 
-BattleMoveAnims['cascadecrash'] = {anim: BattleMoveAnims['wavecrash'].anim};
-BattleMoveAnims['etherealcutter'] = {
-	anim: BattleMoveAnims['psychocut'].anim,
-	prepareAnim: BattleMoveAnims['shadowforce'].prepareAnim,
-};
-BattleMoveAnims['shadowcrescent'] = {anim: BattleMoveAnims['nightshade'].anim};
-BattleMoveAnims['solarflare'] = {anim: BattleMoveAnims['flameburst'].anim};
+BattleMoveAnims['shieldbash'] = {anim: BattleMoveAnims['gigaimpact'].anim};
 BattleMoveAnims['rampaginghammer'] = {anim: BattleMoveAnims['woodhammer'].anim};
 BattleMoveAnims['rottenvial'] = {anim: BattleMoveAnims['fling'].anim};
+BattleMoveAnims['zapbarrage'] = {anim: BattleMoveAnims['zapcannon'].anim};
+BattleMoveAnims['rockcrunch'] = {anim: BattleMoveAnims['crunch'].anim};
+BattleMoveAnims['deepfreeze'] = {anim: BattleMoveAnims['icywind'].anim};
+BattleMoveAnims['frostbite'] = {anim: BattleMoveAnims['freezedry'].anim};
+
+// gen 1 mod
+BattleMoveAnims['fissileblast'] = {anim: BattleMoveAnims['leafstorm'].anim};
+BattleMoveAnims['beam'] = {anim: BattleMoveAnims['icebeam'].anim};
+BattleMoveAnims['glassshards'] = {anim: BattleMoveAnims['iceshard'].anim};
+BattleMoveAnims['meteor'] = {anim: BattleMoveAnims['dracometeor'].anim};
+BattleMoveAnims['megabyte'] = {anim: BattleMoveAnims['icefang'].anim};
+BattleMoveAnims['lagblast'] = {
+	anim: BattleMoveAnims['technoblast'].anim,
+	prepareAnim: BattleOtherAnims.chargestatus.anim,
+};
+BattleMoveAnims['donuttrap'] = {anim: BattleMoveAnims['bind'].anim};
+BattleMoveAnims['sugarblast'] = {anim: BattleMoveAnims['overheat'].anim};
+BattleMoveAnims['gammaray'] = {anim: BattleMoveAnims['confuseray'].anim};

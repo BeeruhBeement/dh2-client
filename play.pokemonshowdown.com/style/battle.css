@@ -483,6 +483,11 @@ License: GPLv2
 	color: #661155;
 }
 
+.nightweather {
+	background: #E6E0AC url(../fx/bg-space.jpg) no-repeat scroll left top;
+	color: #2c2142;
+}
+
 .battle .result {
 	display: none;
 	position: absolute;

@@ -642,7 +642,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			for (const modid in (ClientMods)) {
 				for (const formatid in ClientMods[modid].formats) {
 					if (formatid === format || format.slice(4) === formatid) {
-						if (format.slice(4) === formatid) this.modFormat = formatid;
+						if (format.slice(4) === formatid) this.modFormat = formatid as ID;
 						mod = modid;
 						const formatTable = ClientMods[modid].formats[formatid];
 						if (mod && formatTable.teambuilderFormat) overrideFormat = toID(formatTable.teambuilderFormat);
@@ -906,7 +906,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			}
 
 			// Modified this function to account for pet mods with tradebacks enabled
-			const tradebacksMod = ['gen1expansionpack', 'gen1burgundy'];
+			const tradebacksMod = ['gen1expansionpack', 'gen1burgundy', 'gen1mod'];
 			if (learnset && (moveid in learnset) && (!(this.format.startsWith('tradebacks') || tradebacksMod.includes(this.mod)) ? learnset[moveid].includes(genChar) :
 				(learnset[moveid].includes(genChar) ||
 					(learnset[moveid].includes(`${gen + 1}`) && move.gen === gen)))) {
@@ -1133,6 +1133,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		else if (format === 'doublesou' && dex.gen > 4) tierSet = tierSet.slice(slices.DOU);
 		else if (format === 'doublesuu') tierSet = tierSet.slice(slices.DUU);
 		else if (format === 'doublesnu') tierSet = tierSet.slice(slices.DNU || slices.DUU);
+
 		else if (this.formatType?.startsWith('bdsp') || this.formatType === 'letsgo' || this.formatType === 'stadium') {
 			tierSet = tierSet.slice(slices.Uber);
 		} else if (!isDoublesOrBS) {
@@ -1733,7 +1734,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		const format = this.format;
 		const isHackmons = (format.includes('hackmons') || format.endsWith('bh'));
 		const isSTABmons = (format.includes('stabmons') || format.includes('stylemons')|| format === 'staaabmons');
-		const isTradebacks = (format.includes('tradebacks') || this.mod === 'gen1expansionpack' || this.mod === 'gen1burgundy');
+		const isTradebacks = (format.includes('tradebacks') || this.mod === 'gen1expansionpack' || this.mod === 'gen1burgundy' || this.mod === 'gen1mod');
 		const regionBornLegality = dex.gen >= 6 &&
 			(/^battle(spot|stadium|festival)/.test(format) || format.startsWith('bss') ||
 				format.startsWith('vgc') || (dex.gen === 9 && this.formatType !== 'natdex'));
@@ -1828,7 +1829,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			for (let id in this.getTable()) {
 				if (!format.startsWith('cap') && (id === 'paleowave' || id === 'shadowstrike')) continue;
 				let move = dex.moves.get(id);
-				if (!move.exists || moves.includes(id) || move.gen > dex.gen && !this.battle.tier.includes("Modded")) continue;
+				if (!move.exists || moves.includes(id) || move.gen > dex.gen) continue;
 				if (sketch) {
 					if (move.noSketch || move.isMax || move.isZ) continue;
 					if (move.isNonstandard && move.isNonstandard !== 'Past') continue;

@@ -331,7 +331,12 @@ const Dex = new class implements ModdedDex {
 	}
 	getGen3ModCategory(type: string) {
 		return [
-			'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Psychic', 'Ghost', 'Fairy',
+			'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Psychic', 'Ghost', 'Fairy', 'Sound',
+		].includes(type) ? 'Special' : 'Physical';
+	}
+	getGen1ModCategory(type: string) {
+		return [
+			'Fire', 'Water', 'Grass', 'Ice', 'Electric', 'Dark', 'Psychic', 'Dragon', 'Cosmic', 'Earth', 'Light', 'Sound'
 		].includes(type) ? 'Special' : 'Physical';
 	}
 
@@ -980,7 +985,7 @@ class ModdedDex {
 					data = {...Dex.moves.get(name), ...table.overrideMoveInfo[id]};
 				}
 			}
-			if (this.gen <= 3 && data.category !== 'Status') {
+			if (this.gen <= 3 && data.category !== 'Status' && this.modid !== 'gen3pssplit') {
 				switch(this.modid) {
 					case 'gen1expansionpack':
 					case 'gen2expansionpack':
@@ -991,6 +996,9 @@ class ModdedDex {
 						break;
 					case 'gen3mod':
 						data.category = Dex.getGen3ModCategory(data.type);	
+						break;
+					case 'gen1mod':
+						data.category = Dex.getGen1ModCategory(data.type);	
 						break;
 					default: 
 						data.category = Dex.getGen3Category(data.type);
